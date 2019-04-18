@@ -9,11 +9,31 @@ const initialTodos = [
   {id: 3, task: 'Task3', done: false}
 ];
 
+const getTaskStyle = item =>
+  item.done
+    ? {
+        listStyleType: 'disc',
+        color: 'green'
+      }
+    : {
+        listStyleType: 'circle'
+      };
+
 const getTaskTextStyle = item =>
-  item.done ? {textDecoration: 'line-through'} : {};
+  item.done
+    ? {
+        textDecoration: 'line-through',
+        color: 'green',
+        cursor: 'default'
+      }
+    : {
+        cursor: 'default'
+      };
 
 const getTaskRemoveButtonStyle = () => ({
-  padding: 8
+  padding: 8,
+  color: 'black',
+  cursor: 'pointer'
 });
 
 function App() {
@@ -41,10 +61,17 @@ function App() {
   return (
     <div>
       <div>
-        <input onBlur={e => addTodo(e.target.value)} />
+        <input
+          onKeyPress={e => {
+            if (e.which === 13) {
+              addTodo(e.target.value);
+              e.target.value = '';
+            }
+          }}
+        />
         <ul>
           {todos.map(item => (
-            <li key={item.id}>
+            <li key={item.id} style={getTaskStyle(item)}>
               <span
                 style={getTaskTextStyle(item)}
                 onClick={() => toggleTodo(item.id)}
@@ -60,10 +87,6 @@ function App() {
             </li>
           ))}
         </ul>
-      </div>
-      <div className="App">
-        <h1>Hello CodeSandbox</h1>
-        <h2>Start editing to see some magic happen!</h2>
       </div>
     </div>
   );
