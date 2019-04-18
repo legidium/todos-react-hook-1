@@ -33,7 +33,6 @@ function App() {
   }, []);
 
   const toggleTodo = useCallback(id => {
-    console.log('[DEBUG]');
     setTodos(todos =>
       todos.map(item => (item.id === id ? {...item, done: !item.done} : item))
     );
