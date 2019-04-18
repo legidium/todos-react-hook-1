@@ -9,10 +9,10 @@ const initialTodos = [
   {id: 3, task: 'Task3', done: false}
 ];
 
-const getTaskStyle = item =>
+const getTaskTextStyle = item =>
   item.done ? {textDecoration: 'line-through'} : {};
 
-const getRemoveButtonStyle = () => ({
+const getTaskRemoveButtonStyle = () => ({
   padding: 8
 });
 
@@ -47,13 +47,13 @@ function App() {
           {todos.map(item => (
             <li key={item.id}>
               <span
-                style={getTaskStyle(item)}
+                style={getTaskTextStyle(item)}
                 onClick={() => toggleTodo(item.id)}
               >
                 {item.task}
               </span>
               <span
-                style={getRemoveButtonStyle()}
+                style={getTaskRemoveButtonStyle()}
                 onClick={() => removeTodo(item.id)}
               >
                 x
