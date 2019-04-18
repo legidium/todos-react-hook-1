@@ -38,7 +38,15 @@ const getTaskRemoveButtonStyle = () => ({
 
 function App() {
   const [todos, setTodos] = useState(initialTodos);
-  const prevTodos = useRef([]);
+  const [shouldSave, setShouldSave] = useState(false);
+  const prevTodos = useRef(todos);
+  const inputRef = useRef();
+
+  useEffect(() => {
+    if (prevTodos.current !== todos) {
+      setShouldSave(true);
+    }
+  }, [todos]);
 
   useEffect(() => {
     prevTodos.current = todos;
@@ -58,10 +66,17 @@ function App() {
     );
   }, []);
 
+  const saveTodos = useCallback(() => {
+    window.localStorage.setItem('todos', JSON.stringify(todos));
+    setShouldSave(false);
+    inputRef.current.focus();
+  }, [todos]);
+
   return (
     <div>
       <div>
         <input
+          ref={inputRef}
           onKeyPress={e => {
             if (e.which === 13) {
               addTodo(e.target.value);
@@ -69,6 +84,9 @@ function App() {
             }
           }}
         />
+        <button disabled={!shouldSave} onClick={saveTodos}>
+          Save
+        </button>
         <ul>
           {todos.map(item => (
             <li key={item.id} style={getTaskStyle(item)}>
